@@ -1,0 +1,22 @@
+name: ci
+on:
+  workflow_dispatch:
+  push:
+  # pull_request:
+  #   branches: main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+          node-version-file: ".nvmrc"
+      - name: Install packages for server
+        run: npm ci --ignore-scripts
+      - name: Install Packages for client
+        run: npm ci --ignore-scripts
+        working-directory: ./client
